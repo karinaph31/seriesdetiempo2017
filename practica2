@@ -30,4 +30,12 @@ wtd.table(SDEMT11$CLASE2,weights=SDEMT11$FAC)
 AGS16V1 <- subset(SDEMT11,SDEMT11$ENT == "01" | SDEMT11$ENT == "02")
 table(SDEMT11$ENT)
 ###########
-
+###serie de tiempo
+data("AirPassengers")
+class(AirPassengers)
+start(AirPassengers)## se muestra cuando inicia la ST
+end(AirPassengers) ## se mustra cundo termina la ST
+frequency(AirPassengers)## que frecuencia la ST
+summary(AirPassengers) ## resumen de los datos de la ST
+plot(AirPassengers) ## muestra la grafica
+#####
