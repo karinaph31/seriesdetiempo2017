@@ -1,0 +1,33 @@
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/regulares/enoe/microdatos/enoe_15ymas/2016/2016trim1_dbf.zip",temporal)
+files=unzip(temporal,list = TRUE)$Name
+unzip(temporal,files = files[grepl("dbf",files)])
+install.packages("foreing")
+require(foreign)
+SDEMT11 <- data.frame(read.dbf("sdemt116.dbf"))
+
+View(SDEMT11)
+
+nombres <- c("sergio", "carlos", "paula")
+edad <- c(23, 43, 51)
+base1 <- data.frame(nombres, edad)
+
+3+4
+
+table(SDEMT11$SEX) # tabla para la variable sexo
+table(SDEMT11$ENT)
+
+install.packages("questionr") ## bajamos de internet la libreria
+require(questionr) # mandamos a llamar la libreria a mi sesion de R 
+wtd.table (SDEMT11$SEX, weights = SDEMT11$FAC)
+####03-02-16###
+table(SDEMT11$R_DEF)
+table(SDEMT11$CLASE2)
+
+wtd.table(SDEMT11$CLASE2,weights=SDEMT11$FAC)
+2149567 ... ## DESEMPLEADOS EN MEXICO EN  
+            #2016 TRIM SEGUN LA ENOE 
+AGS16V1 <- subset(SDEMT11,SDEMT11$ENT == "01" | SDEMT11$ENT == "02")
+table(SDEMT11$ENT)
+###########
+
