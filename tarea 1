@@ -1,0 +1,9 @@
+# tarea 1 
+temporal <- tempfile()
+download.file("http://www3.inegi.org.mx/Sistemas/infoenoe/Default_CONAPO.aspx?s=est&c=27736_cvs",temporal)
+files=unzip(temporal,list = TRUE)$Name
+unzip(temporal,files = files[grepl("cvs",files)])
+ENOE <- data.frame(read.cvs("ENOE.cvs"))
+View(ENOE)
+  
+## que funcion me sirve para cvs 
