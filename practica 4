@@ -1,0 +1,65 @@
+# Buscamos en inegi
+# bajamos la ST
+# ubicar la ruta de la ST en computadora 
+# importamos en R el archivo .cvs
+#reconocer el archivo como ST
+######################
+## generar 4 objetos con datos aleatorios y que tengan 60 datos
+### objeto  1 de numero de profesionistas (mill) rango de 5 a 8
+### objeto 2 crec pib rango de 0 a 5
+## objeto 3 porcentaje de ocupados de 40 a 60 
+#### objeto 4 porcentaje de desocupados  rango de 3 a 8
+
+prof<- sample(5:8, 60,replace = TRUE)### objeto  1
+cpib <- sample(0:5,60,replace = TRUE)### objeto  2
+employed<- sample(40:60,60,replace = TRUE)### objeto  3
+unemployed<- sample(3:8,60,replace = TRUE)### objeto 4
+
+### 1) una ves generado los datos hacer una data frame de los 4 objetos 
+pceu<- data.frame(prof, cpib, employed, unemployed)
+
+## mostrar en consola los primeros 12 y ultimos 12 datos
+pceu12 <- pceu[1:12, ] ## muestra los primeros 12 renglones 
+pceu[49:60, ]## muestra los ultimos 12 renglones 
+
+### 3) convertir los objetos en serie de tiempo 
+## desde el data frame comenzando en 2010 y son datos mensuales 
+
+profts<- ts (prof, frequency = 12, start = (2010))
+cpibts <- ts (cpib, frequency = 12, start = (2010))
+employedts<- ts (employed, frequency = 12, start = (2010))
+unemployedts<- ts (unemployed, frequency = 12, start = (2010))
+end (profts)
+
+
+### 4) graficar ñps profesionistas y ocupados en la misma imagen 
+plot(profts)
+plot(cbind(profts, employedts))
+
+
+### 5) graficar el pib y desocupados en la misma imagen 
+plot(cbind(cpibts, unemployedts))
+
+### 6) graficar todas juntas 
+
+plot(cbind(profts, employedts,cpibts, unemployedts))
+
+
+### 5) graficar el empleados y desocupados en la misma imagen 
+plot.ts(pceu[ ,c(1,3)])
+
+pceusts <- ts.intersect(pceu)
+ # bajat datos de la tasa de crecimiento anual del PIb en mexico de 1980 a 2015
+#crear 4 st
+#1980 a 1990
+#1991 a 2000
+# 2001 a 2010
+# 2011 a 2015
+# graficar en una misma imagen de st 2 y 3
+# graficar en una misma imagien la st 1 y 4 
+
+pib <-data.frame(read.csv(("C:\\Users\\SALA-D18\\Documents\\pib2.csv")))
+
+pibts<- ts (pib,frequency = 1,start = 1980)
+plot.ts(pibts[ , c(2,3)])
+plot.ts(pibts[ , c(1,4)])
