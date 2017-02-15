@@ -45,10 +45,10 @@ precio.max <-data.frame(read.csv(("C:\\Users\\Sala-D3\\Documents\\precio.max1.cs
 precio.min <-data.frame(read.csv(("C:\\Users\\Sala-D3\\Documents\\precio.min1.csv")))
 volumen <-data.frame(read.csv(("C:\\Users\\Sala-D3\\Documents\\volumen1.csv")))
 ## serie de tiempo
-preciots<- ts (precio,frequency = 252,start =2016)
-precio.maxts<- ts (precio.max,frequency = 252,start =2016)
-precio.mints<- ts (precio.min,frequency = 252,start =2016)
-voluments<- ts (volumen,frequency = 252,start =2016)
+preciots<- ts (precio,frequency = 1,start =2011)
+precio.maxts<- ts (precio.max,frequency = 1,start =2011)
+precio.mints<- ts (precio.min,frequency = 1,start =2011)
+voluments<- ts (volumen,frequency = 1,start =2011)
 
 ## grafica 
 plot(cbind(preciots, precio.maxts,precio.mints, voluments))
@@ -57,9 +57,9 @@ seriemultiple1<- ts.intersect(preciots, precio.maxts,precio.mints, voluments)
 plot(seriemultiple1, main = "Serie de tiempo multiple AC", xlab = "tiempo",ylab ="precio", col="green",type="overplotted", pch= 2)## grafica serie de tiempo
 # despues dividir estas series de tiempo en 3 periodos con intervalos 
 # iguales... es decir si tienen 30 datos 
-seriemultiple11<-window (seriemultiple1, start= c(2016,01), end= c(2016,10))
-seriemultiple111<-window (seriemultiple1, start= c(2016,11), end= c(2016,20))
-seriemultiple1111<-window (seriemultiple1, start= c(2016,21), end= c(2016,29))
+seriemultiple11<-window (seriemultiple1, start= c(2011,1), end= c(2012,1))
+seriemultiple111<-window (seriemultiple1, start= c(2013,1), end= c(2014,1))
+seriemultiple1111<-window (seriemultiple1, start= c(2015,1), end= c(2016,1))
 
 plot(seriemultiple11, main = "Serie de tiempo multiple AC", xlab = "TIEMPO",ylab ="PRECIO", col="PINK")
 plot(seriemultiple111, main = "Serie de tiempo multiple AC", xlab = "TIEMPO",ylab ="PRECIO", col="BLUE")
