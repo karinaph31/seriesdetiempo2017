@@ -1,39 +1,6 @@
-#####practca 7 #######
-############   Práctica 8  ############
-#IVE 
-#
-bdeso<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
-bdeso
 
-vectz<-c(1:47) #Declaramos el vector que vamos a llenar para obtener la tendencia centrada
-
-for(i in 1:47) #condición lógica donde extraemos de la base los componentes para sacar el promedio
-  {
-  
-  v1<-bdeso[i,]
-  v2<-bdeso[i+1,]
-  v3<-bdeso[i+2,]
-  a<-(v1+v2+v3)/3
-  
-  vectz<-replace(vectz,i,a)
-  
-  }
-
-vectz
-sig
-sig<-bdeso[2:47,]-t[1:46,]
-
-sig1<-data.frame(sig)
-
-Matriz<- matrix(1:4,ncol = 12,nrow = 4
-Matriz<- replace(Matriz,1,0)
-
-De: Miguel Alcaraz Rodríguez <miguel.alcaraz94@hotmail.com>
-Enviado: miércoles, 22 de febrero de 2017 05:03:26 p. m.
-Para: Lucero Zuñiga
-Asunto: cosa rara en R
  
-############   Práctica 8  ############
+############   Práctica 7  ############
 #IVE 
 #
 bdeso<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
