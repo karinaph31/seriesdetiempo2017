@@ -1,0 +1,40 @@
+
+############### for ############
+u1<- (1:10)
+                
+for(i in 1:10){
+  
+  u1[i] <- u1[i] +2
+  print(u1[i])
+  
+  }
+############# while#############
+s <-5
+ while(s < 6 ) {s <- s*2; print(s);}
+
+s <-1
+while(s < 5 ) {s <- s+1; ; if(s== 4) break; print(s);}   
+s <-1
+while(s < 5 ) {s <- 0+1; ; if(s== 2) break; print(s);} 
+###  corre todos los valores por que no encuentra el 2
+s <- 2
+while(s < 5 ) {s <- s+1; if(s== 3) next; print(s);}
+####### grafica###
+des<-read.csv("C:\\Users\\SALA-D18\\Downloads\\TDes.csv")
+
+tsdes <-- ts ( des, frequency = 4, start = 2005)
+detsdes <- decompose(tsdes, type= "multiplicative")## para que sea multiplicativo
+detsdes $ trend
+detsdes $seasonal
+plot(tsdes , col= "blue", main="tasa de desocupacion trimestral " , ylab= "tasas", xlas="anos")
+lines (detsdes$trend, col="red", ylab="tendencia")
+########### estacionariedad####
+monthplot(detsdes $seasonal,main="IVEc", ylab="ivec trimestral ") ## graficar estacionalidad
+  
+  
+  
+  
+  ######### tarea #####
+## 1) encontrar una serie de tiempo con tendencia a la alza y la estacionaridad tambien se imcrementa
+#### 2) aplicar el modelo multiplicartivo 
+########### 3) graficar tendencia 
