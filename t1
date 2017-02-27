@@ -1,0 +1,11 @@
+### tarea cetes ###
+cetes<-read.csv("C:\\Users\\Karina\\Desktop\\cetes2.csv")
+tscetes <-- ts ( cetes, frequency = 12, start = 2010)
+plot(tscetes)
+#2) Aplicar modelo multiplicativo y graficar 
+
+descetes<-decompose(tscetes,type="multiplicative")
+
+descetes&trend 
+plot(tscetes, col="red", main="Cetes a 28 dias", ylab="Tasa", xlab="Años")
+lines(descetes&trend , col="blue", ylab="Tendencia")
