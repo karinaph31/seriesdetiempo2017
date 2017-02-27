@@ -1,0 +1,63 @@
+## descomposicion clasica... ####
+### se utiliza la funcion decompose 
+## otro tipo de descomposicion de la estaciomariedad
+### tendencia y estacionariedad es la descomposicion 
+### por Loess la cual esta basada en un algoritmo que permite 
+## descomponer las series de tiempo en tres elementos: estacionariedad 
+### tendencia y aleatoriedad, una de las ventajas de esta descomposicion
+####es el calculo de la edstacionariedad que se obtiene valores de 
+###  estacionariedad no constantes, en contraste con el metodo clasico de 
+### descomposicion 
+
+##### descomposicion clasica 
+## se uza la funcion descompose por ejemplo
+desocupacion <-read.csv("C:\\Users\\SALA-D18\\Downloads\\tarea2.csv")
+desocupacion 
+class(desocupacion)
+des <-- ts ( desocupacion[1:48,1], frequency = 4, start = 2005)
+class (des)
+desco<- decompose(des)
+tend1<-desco$trend
+plot(tend1, col="blue",main="tendencia desocupacion",ylab="tasas", xlab="años" )
+lines(tend2, col="red")
+#### descomposicio tendencia, estacional por Loose 
+## se utiliza la funcion stl()
+
+##### entonces para descomponer por loose utilizamos 
+desco2<- stl(des,s.window = "periodic", robust = T)
+names(desco2)
+desco2
+tend2<- desco2$time.series[ ,2]
+tend2
+esta2<- desco2$time.series[ ,1]
+esta2
+
+install.packages("fpp")
+require(fpp)
+
+ajus<- seasadj(desco2) ### ajustamos la estacionariedad
+#### pronostico metodo ingenuo 
+ingel <- naive(ajus, h=4)## te pronostica el periodo, que periodicidad quieres pronosticar (h)
+plot(ingel)
+ingel
+#####################################################
+### ejercicio con el PIB ###
+### descomposicion clasica (decompose)
+
+pib <-read.csv("C:\\Users\\SALA-D18\\Downloads\\PIB.csv")
+pib
+class(pib)
+pibst <-- ts ( pib[1:35,1], frequency = 4, start = 2007)
+class (pibst)
+pibdes<- decompose(pibst)
+pibtend1<-pibdes$trend
+plot(pibtend1, col="blue",main="PIB",ylab="Dato", xlab="años" )
+lines(pibtend2, col="red")
+
+##### entonces para descomponer por loose utilizamos 
+pibdesco2<- stl(pibst,s.window = "periodic", robust = T)
+names(pibdesco2)
+pibdesco2
+pibtend2<- pibdesco2$time.series[ ,2]
+pibtend2
+pibesta2<- pibdesco2$time.series[ ,1]
