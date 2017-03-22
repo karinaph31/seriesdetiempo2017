@@ -1,0 +1,45 @@
+desocupacion <-read.csv("C:\\Users\\SALA-D18\\Downloads\\tarea2.csv")
+pib <-data.frame(read.csv(("C:\\Users\\SALA-D18\\Downloads\\PIB.csv")))
+pib
+pibts <- ts (pib, frequency = 4, start = 2007)
+desoct<- ts(desocupacion,frequency = 4,start = 2005)
+acf(pibts)#### correlograma
+acf(desoct)
+#### tarea buscar una serie de tiempo de mexico 
+### en donde el correlograma determinen que tiene ruido blanco 
+## otra st donde se muestre el correlograma exponga que la st tiene caminata aleatoria 
+##########################################################################################
+##########################################################################################
+#################### MODELOS LINEALES PARA PRONOSTICAR ###################################
+
+
+###### son la aplicacion de pronosticoa lineales
+#### como el ingenuo, promedio, ingenuo estacional y el de deriva 
+#### el pronostico ingenuo esta basado en la ultima observacion que 
+## arroja la serie de tiempo. Es decir este pronostico asume que la observacion mas importante 
+###########es la ultima.
+### funcion en R ##
+##### naive (serie, h=num pronosticos )
+install.packages("forecast")
+require(forecast)
+naive(pibts, h=4)
+##### METODO PROMEDIO#####
+###########################################
+# este metodo le da el mismo peso a todas las observaciones u datos 
+# es decir, se asume con este metodo que todas las observaciones 
+### tienen la misma importancia por lo que el pronostico es un promedio 
+# de todas las observaciones 
+### funcion en R 
+### meanf(serie, h=numero de pronosticos)
+meanf(desoct, h=4)
+plot(meanf(desoct, h=4))### graficar 
+
+meanf(pibts,h=4)
+############ Metodo ingenuo estacional ##############
+# este metodo se utiliza en series de tiempo
+#### con alta estacionalidad este pronostico consiste en darle 
+## el mayor peso o la meyor ponderacion al dato del mismo periodo
+## en el año anterior, por ejemplo trimesntre 2 del 2005 es igual al 
+## trimestre 2 del año 2006
+### funcion para utilizarlo en R  es 
+snaive(desoct,h=4)
