@@ -1,0 +1,86 @@
+desocupacion<- read.csv("C:\\Users\\Karina\\Downloads\\tarea2.csv")
+desocupacionts<-ts (desocupacion,start = 2005, end=2015)
+
+#graficamos los del 2005 al 2015 reales
+plot(window(desocupacionts,start = 2005, end=2015), ylab ="Tasa de Desocupacion",
+     xlab="Año", main = "Tasa de desocupacion", col="blue", type="b", pch=5)
+
+#graficamos los datos reales hasta 2010
+plot(window(desocupacionts,start = 2005, end=2010), ylab ="Desocupacion", xlab="Año", main = "Tasa de desocupación", col="pink", 
+     type="b", pch=5)
+
+#reales desde 2011 a 2015
+plot(window(desocupacionts,start = 2011, end=2015), ylab ="Desocupacion", xlab="Año", main = "Tasa de desocupación", col="red", type="b", pch=4)
+
+#ahora cortamos
+desocupacion
+descupa<-desocupacion[1:24,]
+descupa
+
+desocupats<-ts(descupa, frequency= 4, start=2005)
+desocupats
+
+#### los datos restantes de nuetra st
+descupa1<-desocupacion [25:44, ]
+descupa1
+
+desocupa1ts<-ts(descupa1, frequency = 4, start=2011)
+desocupa1ts
+
+install.packages("forecast")
+require(forecast)
+
+#############################################METODOS###########
+############################METODO  INGENUO######
+
+desoc<- naive (desocupats, h=20) 
+desoc
+plot(desoc)
+
+####################################PROMEDIO######
+
+
+desoc1<- meanf(desocupats, h=20)
+
+desoc1
+plot(desoc1)
+##############################INGENUO ESTACIONAL######
+
+
+desoc2<- snaive (desocupats, h=20)
+desoc2
+plot(desoc2)
+
+#############################################DERIVA######
+
+
+desoc3<- rwf(desocupats, h=20, drift=T)
+desoc3
+plot(desoc3)
+####ventana para la grafica teniendo los tres metodos ###
+x11()
+plot(desoc1,main= "Pronostico de desocupacion trimestral")
+lines(desoc1$mean, col="red")
+lines(desoc$mean, col="green")
+lines(desoc2$mean, col="yellow")
+lines(desoc3$mean, col="purple")
+lines(desocupa1ts,start = 2011, end=2015, col="black")
+legend("topleft", lty=1, col=c("red","green", "yellow", "purple", "black"),
+       legend=c("INGENUO", "MEDIA", "INGENUO ESTACIONAL", "DERIVA", "DATOS REALES "))
+
+#Hacer comparaciones
+#### restar el valor real menos el valor arojado en cada metodo
+
+descupa1#### datos de la serie real 
+desoc$mean####datos del metodo ingenuo
+desoingenuo=descupa1-desoc$mean
+desoingenuo
+
+desomedia=descupa1-desoc1$mean
+desomedia
+
+desoingenuoes=descupa1-desoc2$mean
+desoingenuoes
+
+desoderiva=descupa1-desoc3$mean
+desoderiva
