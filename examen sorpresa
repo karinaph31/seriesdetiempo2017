@@ -1,0 +1,88 @@
+########## ejercicio bajar de ICA, NETFLIX, TELEVISA Y TV AZTECA
+###### precio de cierre 2016
+############# ajustar 4 modelos de suavizado exponencial simple( alpha= .2, .4, .6, .8)
+##### graficandolos en una sola grafica y 
+######### una vez que hayan decidido graficamente el mejor ajuste 
+########### aplicar la evaluacion de los ajustes y utilizar las medidas MAE  Y RMSE  extrayendolas
+#### de tal forma que creen un vector que compare estas medidas y este vector indique que alpha es 
+### la mejor 
+##### identificar tendencia, estacionariedad y ciclos en la serie de tiempo e interpretarlos 
+
+install.packages("forecast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
+televisa<- read.csv("C:\\Users\\SALA-D18\\Documents\\TELEVISA.csv",header= T)
+
+televisast<- ts(televisa,,frequency = 252, start =2016)
+
+mod1<- ses(televisast,alpha = 0.2, initial = "simple", h=8)
+mod2<- ses(televisast,alpha = 0.4, initial = "simple", h=8)
+mod3<- ses(televisast,alpha = 0.6, initial = "simple", h=8)
+mod4<- ses(televisast,alpha = 0.8, initial = "simple", h=8)
+
+
+x11()
+plot(mod1, ylab ="precio", xlab = "Dia", main="PRECIO DE TELEVISA", type="o" )
+lines(fitted(mod1), col="pink", type="o")
+lines(fitted(mod2), col="red", type="o")
+lines(fitted(mod3), col="green", type="o")
+lines (fitted(mod4),col="blue", type="o")
+
+#### su puede observar en el grafico que el mejor modelo seria el modelo 4 puesto que los valores son muy cercanos al los valores reales 
+
+######### MAE Y  RMSE
+televisam1 <-accuracy (mod1) #### funcion en R 
+televisam1
+
+televisam2 <-accuracy (mod2) #### funcion en R 
+televisam2
+
+
+televisam3 <-accuracy (mod3) #### funcion en R 
+televisam3
+
+televisam4 <-accuracy (mod4) #### funcion en R 
+televisam4
+#### vector 
+vec1 <- televisam1[1,c(2)]
+vec1 
+vec2 <- televisam2[1,c(2)]
+vec2
+vec3 <- televisam3[1,c(2)]
+vec3
+vec4 <- televisam4[1,c(2)]
+vec4
+#####
+vec11 <- televisam1[1,c(3)]
+vec11 
+vec22 <- televisam2[1,c(3)]
+vec22
+vec33 <- televisam3[1,c(3)]
+vec33
+vec44 <- televisam4[1,c(3)]
+vec44
+
+RMSE <- matrix(c(vec1,vec2,vec3,vec4),nrow=4,ncol=1)
+RMSE
+MAE <- matrix(c(vec11,vec22,vec33,vec44),nrow=4,ncol=1)
+MAE
+matrix (c(RMSE,MAE),nrow=4,ncol=2)
+min(RESE)### valor minimo que se encuentra en la posicion 4, es decir el modelo 4 
+min(MAE)### valor minimo que se encuentra en la posicion 4, es decir el modelo 4
+which.min(RMSE)### el modelo 4 es el mejor, puesto que es el mas cercano a cero
+which.min(MAE)### el modelo 4 es el mejor 
+
+
+##Estacionariedad,tendencia y ciclico
+#para ver en que periodos ocurren los cambios
+
+### se puede observar que en la parte de estacionariedad  no tiene un patron marcado en el año 2016
+### puesto que el finalizar el año tiene una tendencia a la baja 
+### por la parte de tendencia, en la mayoria del año estudiado tiene tanto tendencia a la alza pero en ocasiones 
+### tambien esta tendencia suele disminuir 
+## mientras que se puede observar que en ocasiones tiene un ciclo definido.
+
+
+
+
