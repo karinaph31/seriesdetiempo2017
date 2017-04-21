@@ -1,0 +1,54 @@
+#### TENDENCIA LINAEL DE HOLT ###############
+## EXTENCION DEL SES 
+##Calculo en r
+install.packages("forecast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
+
+deso <- read.csv("C:\\Users\\SALA-D18\\Downloads\\tarea2.csv",header= T)
+des1 <- ts (deso,frequency = 4, start =2005 )
+#### cortamos los datos 
+descupa<-des1[1:36,]
+descupa
+
+desocupats<-ts(descupa, frequency= 4, start=2005, end= 2018)
+desocupats
+
+#### los datos restantes de nuetra st
+descupa1<-des1 [37:48, ]
+descupa1
+
+desocupa1<-ts(descupa1, frequency = 4, start=2014)
+desocupa1
+
+install.packages("forecast")
+require(forecast)
+
+######### FUNCION EN R 
+mod1<- holt(desocupats, alpha= 0.8, beta=0.2, initial="simple", h=5)
+fitted(mod1)
+## tendencia exponencial de holt 
+mod2 <- holt(desocupats, alpha= 0.8, beta=0.2, initial="simple", exponential= TRUE, h=5 )
+fitted(mod2)
+############# modelo: TENDENCIA ADITIVA AMORTIGUADO ####
+mod3 <- holt(desocupats, damped= TRUE)
+plot(mod3)
+
+######### amortiguado multiplicativo ######
+mod4 <- holt(desocupats,exponential= TRUE, damped=TRUE)
+plot(mod4)
+
+
+####ventana para la grafica teniendo los tres metodos ###
+x11()
+plot(mod2,main= "Pronostico de Desocupacion Trimestral")
+lines(mod1$mean, col="red")
+lines(mod2$mean, col="green")
+lines(mod3$mean, col="blue")
+lines(mod4$mean, col="purple")
+lines(desocupats,start = 2014, end=2018, col="black")
+legend("topleft", lty=1, col=c("red","green", "blue", "purple", "black"),
+       legend=c("holt lineal", "holt exponencial", "amortiguado", "amortiguado multiplicativo", "DATOS REALES "))
+
+##########
