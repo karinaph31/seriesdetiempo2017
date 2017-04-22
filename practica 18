@@ -52,3 +52,48 @@ legend("topleft", lty=1, col=c("red","green", "blue", "purple", "black"),
        legend=c("holt lineal", "holt exponencial", "amortiguado", "amortiguado multiplicativo", "DATOS REALES "))
 
 ##########
+#######################
+
+##Calculo en r
+install.packages("forecast")
+require(forecast)
+
+install.packages("fpp")
+require(fpp)
+
+venta<- read.csv("C:\\Users\\Karina\\Documents\\venta1.csv",header= T)
+venta1 <- ts (venta,frequency = 4, start =2012 )
+#### cortamos los datos 
+venta2<-venta1[1:17,]
+
+ventats<-ts(venta2, frequency= 4, start=2012, end= 2017)
+### los datos restantes de nuetra st
+venta11<-venta1[18:20,]
+
+venta3<-ts(venta11, frequency = 4, start=2014)
+
+######### FUNCION EN R 
+mod1<- holt(ventats, alpha= 0.8, beta=0.2, initial="simple", h=3)
+fitted(mod1)
+## tendencia exponencial de holt 
+mod2 <- holt(ventats, alpha= 0.8, beta=0.2, initial="simple", exponential= TRUE, h=3 )
+fitted(mod2)
+############# modelo: TENDENCIA ADITIVA AMORTIGUADO ####
+mod3 <- holt(ventats, damped= TRUE)
+plot(mod3)
+
+######### amortiguado multiplicativo ######
+mod4 <- holt(ventats,exponential= TRUE, damped=TRUE)
+plot(mod4)
+
+
+####ventana para la grafica teniendo los tres metodos ###
+x11()
+plot(mod2,main= "ventas")
+lines(mod1$mean, col="red")
+lines(mod2$mean, col="green")
+lines(mod3$mean, col="blue")
+lines(mod4$mean, col="purple")
+lines(c(ventats, venta3),start = 2014, end=2016, col="black")
+legend("topleft", lty=1, col=c("red","green", "blue", "purple", "black"),
+       legend=c("holt lineal", "holt exponencial", "amortiguado", "amortiguado multiplicativo", "DATOS REALES "))
