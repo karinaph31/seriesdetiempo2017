@@ -1,0 +1,29 @@
+install.packages("forecast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
+
+dolar<- read.csv("C:\\Users\\SALA-D18\\Documents\\dolar1.csv",header= F)
+dolar1<- ts (dolar,frequency = 12, start =2015 )
+plot(dolar1)
+
+#### cortar 
+dolar2 <- window(dolar1 , start= c(2015,1), end=c(2015,12))
+dolar3<- window(dolar1, start=c(2016,1), end=c(2016,4))
+#### modelos
+install.packages("fpp")
+require(fpp)
+ mod1 <- hw(dolar2, seasonal = "additive", h=4)
+ mod2 <- hw(dolar2, seasonal = "multiplicative", h=4)
+ mod3 <- holt(dolar2, initial = "simple", exponential = T, h=4)
+ ###### grafica 
+ x11()
+ plot(dolar1,main= "Pronostico", col="red")
+ lines(mod1$mean, col="pink")
+ lines(mod2$mean, col="green")
+ lines(mod3$mean, col="blue")
+ lines(dolar3 , col="black")
+ lines(dolar2,start = 2015, end=(2016, 3), col="black")
+ legend("topleft", lty=1, col=c("red", "pink","green", "blue", "black"),
+        legend=c("datos reales", "ADITIVO", "MULTIPLICATIVO", "TENDENCIA EXPONECIAL", "DATOS REALES "))
+ 
