@@ -1,0 +1,241 @@
+clase <- read.csv("C:\\Users\\Karina\\Documents\\clase.csv", header =  T)
+########## DATOS ############
+dolar <- clase [1:108,1]
+ica <- clase [1:252,2]
+bimbo <- clase [1:252,3]
+ ############### SERIES DE TIEMPO Y GRAFICAS #########
+dolarts <- ts (dolar, frequency = 252, start = c(2016, 10), end=c(2017, 03))
+dolarts 
+plot (dolarts)
+ 
+icats <- ts (ica, frequency= 252, start= 2016)
+plot(icats)
+
+
+bimbots <- ts(bimbo, frequency = 252, start =  2016)
+plot(bimbots)
+
+install.packages("fpp")
+require(fpp)
+##########################################################################################################
+#### en esta serie el modelo que se podria utilizar es el ingenuo estacional o holt multiplicativo#####
+###########################################################################################################
+a <- naive(dolarts)#####  ingenuo 
+b <- meanf(dolarts) #### promeedio 
+c <- snaive(dolarts) ### ingenuo estacional 
+d <- rwf(dolarts, drift= TRUE ) ### deriva 
+dd<- holt(dolarts, initial="simple") #### hot lineal
+e <- holt(dolarts, initial="simple", exponential= TRUE)## tendencia exponencial de holt 
+f <- holt(dolarts, damped= TRUE)######## TENDENCIA ADITIVA AMORTIGUADO
+g <- holt(dolarts,exponential= TRUE, damped=TRUE)######### amortiguado multiplicativo
+h <- hw(dolarts, seasonal = "additive")### aditivo
+i<- hw(dolarts, seasonal = "multiplicative") #### multiplicativo
+
+
+x11()
+plot(dolarts, main = "dolar ", col="black")
+lines(a$mean,col="red")
+lines(b$mean,col="purple")
+lines(c$mean,col="orange")
+lines(d$mean,col="pink")
+lines(e$mean,col="blue")
+lines(f$mean,col="yellow")
+lines(g$mean,col="green")
+lines(h$mean,col="gray")
+lines(i$mean,col="brown")
+lines(dd$mean,col="turquoise")
+legend("topleft",lty=1,col=c("black", "red","purple","orange","pink","blue","yellow","green","gray","brown","turquoise" ),legend = c("datos reales ", "ingenuo","promedio","ingenuo estacional","deriva","tendencia exponencial", "mortiguado", "amortiguado multiplicativo", " aditivo", "multiplicativo","holt lineal"))
+
+
+##### los modelos que mejor se ajustan serian: deriva, lineal exponencial, amortiguado y holt winter multiplicativo
+
+x11()## para sacar una ventana para mostrar la grafica 
+plot(dolarts, main = "DOLAR" ,type="o", col="black", ylab="", xlab="")
+lines(d$fitted,col="red")# deriva
+lines(e$fitted,col="blue") #lineal exponencial holt
+lines(f$fitted,col="green")# amortiguado 
+lines(i$fitted,col="yellow")# holt winter multiplicativo 
+legend("topleft",lty=1,col=c("black","red","blue","green","yellow"),legend = c("DATOS REALES ","DERIVA","TENDENCIA EXPONENCIAL HOLT", "AMORTIGUADO", "HOLT WINTER MULTIPLICATIVO"))
+require(fpp)
+a1d <-accuracy(d)
+a1
+MAEa1d<-a1d[,3]
+
+a2d <-accuracy(e)
+a2
+MAEa2d<-a2d[,3]
+
+a3d <-accuracy(f)
+a3
+MAEa3d<-a3d[,3]
+
+a4d <-accuracy(i)
+a4
+MAEa4d<-a4d[,3]
+
+
+maedolar<-c(MAEa1d,MAEa2d,MAEa3d,MAEa4d)
+which.min(maedolar) 
+#El metodo que resulta mas cercano a cero es el metodo amortiguado puesto que es el mas cercano a los datos reales   
+#en el analisis grafico indicaba que los modelos que se ajustan mejor eran los Holt, ( amortiguado)
+
+x11()## para sacar una ventana para mostrar la grafica 
+plot(dolarts, main = "DOLAR",type="o", col="black", ylab="", xlab="")
+lines(d$mean,col="red")# deriva
+lines(e$mean,col="blue") #lineal exponencial holt
+lines(f$mean,col="green")# amortiguado 
+lines(i$mean,col="brown")# holt winter multiplicativo 
+legend("topleft",lty=1,col=c("black","red","blue","green","brown"),legend = c("DATOS REALES ","DERIVA","TENDENCIA EXPONENCIAL HOLT", "AMORTIGUADO", "HOLT WINTER MULTIPLICATIVO"))
+##### como se puede observar los mejores metodos para pronosticar son los holt Y el amortiguado  puesto que se apega mas a la serie de tiempo
+### el modelo que no pronostica bien a esta series es el de la deriva.
+
+
+##############################################################################################
+############################### ICA #####################################################
+
+#############################################################################################################
+###EN ESTA SERIE DE TIEMPO SE PODRIA USAR EL MODELO HOLT LINEAL O EL TENDENCIA EXPONENCIAL####
+###############################################################################################
+
+aa <- naive(icats, h=5)#####  ingenuo 
+bb <- meanf(icats, h=5) #### promeedio 
+cc <- snaive(icats, h=5) ### ingenuo estacional 
+dd <- rwf(icats, drift= TRUE, h=5 ) ### deriva 
+ddd<- holt(icats, initial="simple", h=5)#### hot lineal
+ee <- holt(icats, initial="simple", exponential= TRUE, h=5)## tendencia exponencial de holt
+ff <- holt(icats, damped= TRUE, h=5)######## TENDENCIA ADITIVA AMORTIGUADO
+gg <- holt(icats,exponential= TRUE, damped=TRUE, h=5)######### amortiguado multiplicativo
+hh<- hw(icats, seasonal = "additive", h=5)### aditivo
+ii<- hw(icats, seasonal = "multiplicative", h=5) #### multiplicativo
+
+x11()## para sacar una ventana para mostrar la grafica 
+plot(icats, main = " ICA ", col="black")
+lines(aa$mean,col="red")
+lines(bb$mean,col="purple")
+lines(cc$mean,col="orange")
+lines(dd$mean,col="pink")
+lines(ee$mean,col="blue")
+lines(ff$mean,col="yellow")
+lines(gg$mean,col="green")
+lines(hh$mean,col="gray")
+lines(ii$mean,col="brown")
+lines(ddd$mean,col="turquoise")
+legend("topleft",lty=1,col=c("black", "red","purple","orange","pink","blue","yellow","green","gray","brown","turquoise" ),legend = c("datos reales ", "ingenuo","promedio","ingenuo estacional","deriva","tendencia exponencial", "mortiguado", "amortiguado multiplicativo", " aditivo", "multiplicativo","holt lineal"))
+
+
+##### los modelos que mejor se ajustan serian: INGENUO ESTACIOL, HOLT LINEAL EXPONENCIAL, AMORTIGUADO MULTIPLICATIVO Y HOLT WINTER MULTIPLICATIVO
+### PUESTO QUE EL GRAFICO DE iCA PRESENTA UNA ESTACIONALIDAD.
+
+x11()
+plot(icats, main = "ICA" ,type="o", col="black", ylab="", xlab="")
+lines(dd$fitted,col="red")# deriva
+lines(ee$fitted,col="blue") #lineal exponencial holt
+lines(gg$fitted,col="green")# amortiguado multiplicativo
+lines(ii$fitted,col="yellow")# holt winter multiplicativo 
+legend("topleft",lty=1,col=c("black","red","blue","green","yellow"),legend = c("DATOS REALES ","INGENUO EXPONENCIAL", "HOLT LINEAL EXPONENCIAL", "AMORTIGUADO MULTIPLICATIVO", "HOLT WINTER MULTIPLICATIVO"))
+require(fpp)
+a1ICA <-accuracy(dd)
+a1ICA
+MAEa1ICA<-a1ICA[,3]
+
+a2ICA <-accuracy(ee)
+a2ICA
+MAEa2ICA<-a2ICA[,3]
+
+a3ICA <-accuracy(ff)
+a3ICA
+MAEa3ICA<-a3ICA[,3]
+
+a4ICA <-accuracy(ii)
+a4ICA
+MAEa4ICA<-a4ICA[,3]
+
+
+maeICA<-c(MAEa1ICA,MAEa2ICA,MAEa3ICA,MAEa4ICA)
+which.min(maeICA) 
+#El metodo que resulta mas cercano a cero es el metodo  de la deriva,puesto que toma en cuenta los cambios historicos   
+
+x11()
+plot(icats, main = "ICA",type="o", col="black", ylab="", xlab="")
+lines(dd$mean,col="red")# deriva
+lines(ee$mean,col="blue") #lineal exponencial holt
+lines(gg$mean,col="green")# amortiguado 
+lines(ii$mean,col="brown")# holt winter multiplicativo 
+legend("topleft",lty=1,col=c("black","red","blue","green","brown"),legend = c("DATOS REALES ","DERIVA","TENDENCIA EXPONENCIAL HOLT", "AMORTIGUADO", "HOLT WINTER MULTIPLICATIVO"))
+##### como se puede observar los mejores metodos para pronosticar son los holt lineal exponencial
+# el de la deriva y el amortiguado multiplicativo puesto que da un mejor pronostico
+
+
+##############################################################################################
+###############################BIMBO####################################################
+###############################################################################################
+###############################################################################################
+
+aaa <- naive(bimbots, h=4)#####  ingenuo 
+bbb <- meanf(bimbots, h=4) #### promeedio 
+ccc <- snaive(bimbots,h=4) ### ingenuo estacional 
+ddd <- rwf(bimbots, h= 4, drift= TRUE ) ### deriva 
+dddd<- holt(bimbots, initial="simple", h=4) #### hot lineal
+eee <- holt(bimbots, initial="simple", exponential= TRUE, h=4)## tendencia exponencial de holt
+fff <- holt(bimbots, damped= TRUE, h=4)######## TENDENCIA ADITIVA AMORTIGUADO
+ggg <- holt(bimbots,exponential= TRUE, damped=TRUE, h=4)######### amortiguado multiplicativo
+hhh<- hw(bimbots, seasonal = "additive", h=4)### aditivo
+iii<- hw(bimbots, seasonal = "multiplicative", h=4) #### multiplicativo
+
+x11()
+plot(bimbots, main = "dolar ", col="black")
+lines(aaa$mean,col="red")
+lines(bbb$mean,col="purple")
+lines(ccc$mean,col="orange")
+lines(ddd$mean,col="pink")
+lines(eee$mean,col="blue")
+lines(fff$mean,col="yellow")
+lines(ggg$mean,col="green")
+lines(hhh$mean,col="gray")
+lines(iii$mean,col="brown")
+lines(dddd$mean,col="turquoise")
+legend("topleft",lty=1,col=c("black", "red","purple","orange","pink","blue","yellow","green","gray","brown","turquoise" ),legend = c("datos reales ", "ingenuo","promedio","ingenuo estacional","deriva","tendencia exponencial", "mortiguado", "amortiguado multiplicativo", " aditivo", "multiplicativo","holt lineal"))
+
+##### los modelos que mejor se ajustan serian: HOLT LINEAL EXPONENCIAL, HOLT WINTER MULTIPLICATIVO Y AMORTIGUADO MULTIPLICATIVO
+
+x11()## para sacar una ventana para mostrar la grafica 
+plot(bimbots, main = "bimbo ",type="o", col="black", ylab="", xlab="")
+lines(bbb$fitted,col="red")# PROMEDIO
+lines(eee$fitted,col="blue") #lineal exponencial holt
+lines(ggg$fitted,col="green")# amortiguado multiplicativo
+lines(iii$fitted,col="brown")# holt winter multiplicativo 
+legend("topleft",lty=1,col=c("black","red","blue","green","brown"),legend = c("DATOS REALES ","PROMEDIO","TENDENCIA EXPONENCIAL HOLT", "AMORTIGUADO MULTIPLICATIVO", "HOLT WINTER MULTIPLICATIVO"))
+require(fpp)
+a1 <-accuracy(bbb)
+a1
+MAEa1<-a1[,3]
+
+a2 <-accuracy(eee)
+a2
+MAEa2<-a2[,3]
+
+a3 <-accuracy(ggg)
+a3
+MAEa3<-a3[,3]
+
+a4 <-accuracy(iii)
+a4
+MAEa4<-a4[,3]
+
+
+mae<-c(MAEa1,MAEa2,MAEa3,MAEa4)
+which.min(mae) 
+#El metodo que resulta mas cercano a cero es el metodo amortiguado multiplicativo   
+#en el analisis grafico indicaba que los modelos que se ajustan mejor eran los Holt, ( amortiguado)
+
+
+######################### pronosticos ################3
+x11()
+plot(bimbots, main = "bimbo ",type="o", col="black", ylab="", xlab="")
+lines(bbb$mean,col="red")# promedio
+lines(eee$mean,col="blue") #lineal exponencial holt
+lines(ggg$mean,col="green")# amortiguado multiplicativo
+lines(iii$mean,col="brown")# holt winter multiplicativo 
+legend("topleft",lty=1,col=c("black","red","blue","green","brown"),legend = c("DATOS REALES ","promedio","TENDENCIA EXPONENCIAL HOLT", "AMORTIGUADO MULTIPLICATIVO", "HOLT WINTER MULTIPLICATIVO"))
+##### como se puede observar los mejores metodos para pronosticar son los holt puesto que se apega mas a la serie de tiempo
+
