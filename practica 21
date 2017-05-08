@@ -1,0 +1,14 @@
+                      ############ ICA #################
+                      
+ica <- read.csv("C:\\Users\\SALA-D18\\Documents\\ica.csv")
+icats <- ts (ica , frequency=252, start= 2016)
+acf (icats)
+plot(icats)
+
+############### genere una st con 252 daros 
+########### del 2016 al 2017 de¿iaria de rango 
+
+aa<- sample(300:900,)
+ta <- ts(aa, frequency = 252, start = 2016)
+acf (ta)
+plot(ta)
