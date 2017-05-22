@@ -1,0 +1,71 @@
+cemex <- read.csv("C:\\Users\\SALA-D18\\Documents\\cemex2.csv", header = T)
+cemexts <- ts (cemex , frequency=252, start= 2016)
+
+bimbo <- read.csv("C:\\Users\\SALA-D18\\Documents\\bimbo.csv", header = T)
+bimbots <- ts (bimbo , frequency=252, start= 2016)
+install.packages("foreign")
+install.packages("fpp")
+require (foreign)
+require (fpp)
+###########################################################################
+#### 1) revisar si nuestra serie es estacionaria 
+### se aplica la prueba de raiz unitaria atraves de la funcion 
+## adf.test Y esperamos que ek p-value sea menor a .05
+adf.test(bimbots)
+dbimts <- diff(bimbots)####### aplicar la primera diferenciacion con la funcion diff
+## debido a que la serie serie original no es estacionaria
+adf.test(dbimts)
+#### que muestra serie en su primera diferenciacion se convierte en estacionaria 
+acf(dbimts)#### en este deteriminamos el numero de  q =2 que se asocia con 
+### los modelos  de promedios moviles 
+
+#### para determinar el valor de p que se relaciona con los modelos 
+### autorregresivos se utiliza la funcion  pacf()
+pacf(dbimts)###segun el correlograma pacf el valor de p es 1 
+### por lo que se propone un modelo ARIMA(1,1,2)
+
+
+modbim <- Arima (bimbots, order=c(1,1,2))## se usa la st original 
+modbim
+
+modbim1 <- Arima (bimbots, order=c(2,1,2)) 
+modbim1
+### entre estos dos modelos habria que revisar el valor de AIcc y el menor valor
+### de AIcc seria el mejor modelo con el criterio de AIKAIKE
+
+modres<- residuals(modbim)#### residuales nos sirven para saber si tienen ruido blanco 
+Box.test(modres, lag = 12, type = "Ljung-Box")## p value >.6 grande suguiere residuales
+### son ruido blanco 
+mod1 <- forecast(modbim, h=12)
+plot(forecast(modbim, h=12), include = 18)### include nos da en este caso los ultimos 18 datos de la serie 
+mod1
+summary(mod1)
+### funcion en R
+auto.arima(bimbots)
+modres1<- residuals(auto.arima(bimbots))#### residuales nos sirven para saber si tienen ruido blanco 
+Box.test(modres1, lag = 12, type = "Ljung-Box")
+mod11 <- forecast(auto.arima(bimbots), h=12)
+plot(forecast(auto.arima(bimbots), h=12), include = 18)
+
+######################################### CEMEX ###################################
+###################################################################################
+adf.test(cemexts)### el valor de p-value es muy grande 
+dcemts <- diff(cemexts)
+
+adf.test(dcemts) #### el p-value es menor a .05
+acf(dcemts)## valor de q es 2 
+pacf(dcemts) ## el valor de p =0
+modcem <- Arima (cemexts, order=c(0,1,2))## se usa la st original 
+modcem
+modcem1 <- Arima (cemexts, order=c(0,1,0))## se usa la st original 
+modcem1
+modresc<- residuals(modcem)#### residuales nos sirven para saber si tienen ruido blanco 
+Box.test(modresc, lag = 12, type = "Ljung-Box")
+
+modc1 <- forecast(modcem, h=12)
+plot(forecast(modcem, h=12), include = 18)### include nos da en este caso los ultimos 18 datos de la serie 
+modc1
+auto.arima(cemexts)
+modres11<- residuals(auto.arima(cemexts))
+Box.test(modres11, lag = 12, type = "Ljung-Box")
+plot(forecast(auto.arima(cemexts), h=12), include = 18)
