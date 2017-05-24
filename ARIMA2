@@ -1,0 +1,59 @@
+install.packages("foreign")
+install.packages("fpp")
+require (foreign)
+require (fpp)
+am <- read.csv("C:\\Users\\SALA-D18\\Downloads\\AMX.csv", header = T)
+am1<- ts (am[,5] , frequency=252, start= 2016)
+ zz <- Arima(am1, order = c(1,0,0))
+ zz
+  ### yt= c+ fi1(Yt-1)+fi2(Yt-2)+...+ fip(Yt-p)+et
+ ## en este caso el modelo AR(1) se plantea de la siguiente manera 
+ ## yt=13.3425+ .9864(Yt-1)+ et.... en este caso fi1= .9864 ### c es el intercepto
+ # si tuvieramos un modelo autorregresivo de orden 2 se expresa como modelo 
+ ## arima de la sig manera
+  zz2 <- Arima(am1, order= c(2,0,0))
+  zz2
+  ### este caso el modelo AR(2) se plantea de la sig manera 
+  ## yt= 13.2634 + 1.0601 (Yt-1)-.0755(Yt-2)+ et ... en este caso fi1= 1.0601,fi1= -.0755,
+  
+  
+  
+  ### ahora bien si tenemos de promedios moviles MA(q) se puede expresar 
+  ## yt= c+ tetal(et-1)+tetal(et-2)+..+ tetal(et-q)+et
+  ## a traves de un modelos ARIMA se expresa esta forma como lo podriamos representar
+   
+  yy<- Arima(am1, order = c(0,0,1)) ### en este caso es un MA(1)
+  yy
+  ## que se puede expresar de la sig manera 
+  ## yt= c+ tetal(Yt-1)+tetal(Yt-2)+..+ tetal(Yt-p)
+  ## para el modelo planteado se expresa.. 
+  # yt= 12.7409+.8605(et-1)+ et en este caso tetal=.8605
+  
+  
+  #### para el modelo de promedios moviles de orden 2 se expresa  en un modelo ARIMA como: 
+  yy2<-Arima(am1, order = c(0,0,2))
+  yy2
+  ## en este caso se tiene un modelo MA(2)
+  
+  ## para el modelo planteado se expresa ...
+  ## yt= 12.7481+ 1.1339(et-1)+ .7423(et-2)+ et.... en este caso c= 12.7481,
+  ## tetal=1.1339,tetal=.7423
+  
+  ### MODELOS ARIMA(CON DIFERENCIACION)
+  y´t= c+ fi1(Y´t-1)+fi2(Yt-2)+...+ fip(Y´t-p)+tetal(et-1)+tetal(et-2)+..+ tetal(et-q)+et
+  
+  ## PARA UN MODELO ARIMA COM p= 2, d=3, q=2 SE EXPRESA:
+  yy3 <- Arima(am1, order = c(2,3,2))
+  ### yt= c+ fi1(Yt-1)+fi2(Yt-2)+...+ fip(Y´t-p)+et
+  yy3
+  ## con este modelo expresamos 
+  y´´´t= .0716(Y´´´t-1)-0.1527(Yt-2)-1.9987(et-1)+.9998(et-2)+et
+  #############################################################################
+  ##############################################################################
+  ################### GCARSO ARIMA(2,2,2)
+  ga <- read.csv("C:\\Users\\SALA-D18\\Downloads\\GCARSOA1.MX.csv", header = T)
+  ga1<- ts (ga[,5] , frequency=252, start= 2016)
+  ga2 <- Arima(ga1, order = c(2,2,2))
+  ga2
+  ## con este modelo expresamos::::
+  y´t= 0.6885(Y´t-1)-0.14297(Y´t-2)-1.7753(et-1)+0.7753(et-2)+et
